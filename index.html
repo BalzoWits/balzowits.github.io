@@ -4,99 +4,201 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BalzoWits</title>
-<meta name="description" content="Tutti i progetti pubblicati su GitHub Pages da BalzoWits">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23e4572e'/%3E%3Ctext x='16' y='23' font-size='19' font-family='Georgia,serif' font-weight='bold' text-anchor='middle' fill='%23fff'%3EB%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Giochi, generatori per la stampa 3D e piccoli strumenti, tutti da aprire nel browser">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23e4572e'/%3E%3Ctext x='16' y='23' font-size='19' font-family='Georgia,serif' font-weight='bold' text-anchor='middle' fill='%23fff'%3EB%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #f6f3ee; --card: #fffdf9; --ink: #1d1b18; --muted: #6f6a62; --line: #e4ddd2;
-  --accent: #e4572e; --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(60,40,20,.08);
+  --bg: #f5f1ea; --card: #fffdf8; --ink: #1c1a17; --muted: #6e675d; --line: #e6ded1;
+  --accent: #e4572e;
+  --shadow: 0 1px 2px rgba(40,25,10,.05), 0 10px 30px -12px rgba(60,40,20,.18);
+  --shadow-up: 0 2px 4px rgba(40,25,10,.06), 0 22px 40px -16px rgba(60,40,20,.30);
 }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #151413; --card: #1e1c1a; --ink: #f1ece4; --muted: #a39b8f; --line: #34302b;
-          --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35); }
+  :root { --bg: #131211; --card: #1c1a18; --ink: #f2ede5; --muted: #a59d90; --line: #2f2b27;
+          --shadow: 0 1px 2px rgba(0,0,0,.4), 0 10px 30px -12px rgba(0,0,0,.6);
+          --shadow-up: 0 2px 4px rgba(0,0,0,.4), 0 22px 40px -16px rgba(0,0,0,.8); }
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--ink);
-       font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-main { max-width: 1040px; margin: 0 auto; padding: 56px 16px 40px; }
-header h1 { font: 700 clamp(2.2rem, 6vw, 3.4rem)/1.05 Georgia, "Times New Roman", serif;
-            margin: 0 0 10px; letter-spacing: -.02em; }
-header h1 span { color: var(--accent); }
-header p { margin: 0; color: var(--muted); max-width: 52ch; }
-#griglia { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-           gap: 16px; margin-top: 40px; }
-a.card { display: flex; flex-direction: column; gap: 10px; padding: 20px; min-height: 170px;
-         background: var(--card); border: 1px solid var(--line); border-radius: 14px;
-         color: inherit; text-decoration: none; box-shadow: var(--shadow);
-         transition: transform .18s ease, border-color .18s ease; }
-a.card:hover, a.card:focus-visible { transform: translateY(-3px); border-color: var(--c); outline: none; }
-.top { display: flex; align-items: center; gap: 12px; }
-.badge { flex: none; width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;
-         background: var(--c); color: #fff; font: 700 1.15rem Georgia, serif; }
-.card h2 { margin: 0; font-size: 1.12rem; line-height: 1.25; }
-.card p { margin: 0; color: var(--muted); font-size: .94rem; flex: 1; }
-.meta { display: flex; justify-content: space-between; font-size: .8rem; color: var(--muted); }
-.meta .vai { color: var(--c); font-weight: 600; }
-#stato { color: var(--muted); margin-top: 24px; font-size: .9rem; }
-footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); min-height: 100vh;
+       font: 16px/1.55 Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+/* macchie di colore sullo sfondo */
+body::before { content: ""; position: fixed; inset: -20vmax; z-index: -1; pointer-events: none; opacity: .55;
+  background:
+    radial-gradient(38vmax 30vmax at 12% 8%, color-mix(in srgb, #e4572e 22%, transparent), transparent 70%),
+    radial-gradient(34vmax 28vmax at 92% 18%, color-mix(in srgb, #2e86ab 18%, transparent), transparent 70%),
+    radial-gradient(40vmax 30vmax at 70% 100%, color-mix(in srgb, #d4a017 16%, transparent), transparent 70%); }
+main { max-width: 1080px; margin: 0 auto; padding: clamp(40px, 9vw, 96px) 16px 48px; }
+
+header { display: grid; gap: 14px; }
+.logo { width: 56px; height: 56px; border-radius: 16px; background: var(--accent); color: #fff;
+        display: grid; place-items: center; font: 800 30px/1 Fraunces, Georgia, serif;
+        box-shadow: 0 10px 24px -10px var(--accent); transform: rotate(-6deg); }
+h1 { font: 800 clamp(2.6rem, 8vw, 4.4rem)/1 Fraunces, Georgia, serif; margin: 6px 0 0; letter-spacing: -.03em; }
+h1 span { color: var(--accent); }
+.sotto { margin: 0; color: var(--muted); font-size: 1.08rem; max-width: 50ch; }
+
+#filtri { display: flex; flex-wrap: wrap; gap: 8px; margin: 36px 0 20px; }
+#filtri button { font: 500 .9rem Inter, system-ui, sans-serif; color: var(--ink); cursor: pointer;
+  background: var(--card); border: 1px solid var(--line); border-radius: 999px; padding: 7px 14px;
+  transition: background .15s, border-color .15s, color .15s; }
+#filtri button:hover { border-color: var(--muted); }
+#filtri button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+#filtri .n { opacity: .55; margin-left: 4px; }
+
+#griglia { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 18px; }
+a.card { --c: #e4572e; position: relative; display: flex; flex-direction: column; gap: 14px; padding: 22px;
+  background: var(--card); border: 1px solid var(--line); border-radius: 20px; overflow: hidden;
+  color: inherit; text-decoration: none; box-shadow: var(--shadow);
+  transition: transform .22s cubic-bezier(.2,.8,.2,1), box-shadow .22s, border-color .22s;
+  animation: entra .5s cubic-bezier(.2,.8,.2,1) both; animation-delay: calc(var(--i) * 60ms); }
+a.card::after { content: ""; position: absolute; inset: 0 0 auto; height: 4px; background: var(--c); opacity: .85; }
+a.card:hover, a.card:focus-visible { transform: translateY(-4px); box-shadow: var(--shadow-up);
+  border-color: color-mix(in srgb, var(--c) 45%, var(--line)); outline: none; }
+.fermo a.card { animation: none; }
+@keyframes entra { from { opacity: 0; transform: translateY(14px); } }
+
+.testa { display: flex; align-items: center; gap: 14px; }
+.icona { flex: none; width: 64px; height: 64px; border-radius: 16px; display: grid; place-items: center;
+  background: color-mix(in srgb, var(--c) 14%, var(--card));
+  border: 1px solid color-mix(in srgb, var(--c) 25%, transparent); transition: transform .3s cubic-bezier(.2,.8,.2,1); }
+a.card:hover .icona { transform: rotate(-5deg) scale(1.06); }
+.icona img, .icona svg { width: 42px; height: 42px; object-fit: contain; display: block; }
+.icona .lettera { font: 800 28px/1 Fraunces, Georgia, serif; color: var(--c); }
+.card h2 { margin: 0; font: 600 1.28rem/1.2 Fraunces, Georgia, serif; letter-spacing: -.01em; }
+.tag { display: inline-block; margin-top: 5px; font-size: .74rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .06em; color: color-mix(in srgb, var(--c) 80%, var(--ink)); }
+.card p { margin: 0; color: var(--muted); font-size: .95rem; flex: 1; }
+.piede { display: flex; justify-content: space-between; align-items: center; font-size: .82rem; color: var(--muted);
+  padding-top: 12px; border-top: 1px dashed var(--line); }
+.vai { color: var(--c); font-weight: 600; display: inline-flex; gap: 6px; align-items: center; }
+.vai i { font-style: normal; transition: transform .2s; }
+a.card:hover .vai i { transform: translateX(4px); }
+
+#stato { color: var(--muted); margin-top: 20px; font-size: .9rem; }
+footer { margin-top: 56px; color: var(--muted); font-size: .85rem; }
 footer a { color: inherit; }
-@media (prefers-reduced-motion: reduce) { a.card { transition: none; } }
+@media (prefers-reduced-motion: reduce) { *, *::before { animation: none !important; transition: none !important; } }
 </style>
 </head>
 <body>
 <main>
   <header>
+    <div class="logo" aria-hidden="true">B</div>
     <h1>Balzo<span>Wits</span></h1>
-    <p>Giochi, generatori e piccoli strumenti fatti per curiosità. Si aprono nel browser, senza installare niente.</p>
+    <p class="sotto">Giochi da fare col telefono, generatori per la stampa 3D e piccoli strumenti. Tutto si apre nel browser, senza installare niente.</p>
   </header>
+  <nav id="filtri" aria-label="Categorie"></nav>
   <section id="griglia" aria-label="Progetti"></section>
   <div id="stato"></div>
-  <footer>L'elenco si aggiorna da solo con i repository di <a href="https://github.com/BalzoWits">github.com/BalzoWits</a> che hanno GitHub Pages attivo.</footer>
+  <footer>L'elenco si aggiorna da solo dai progetti di <a href="https://github.com/BalzoWits">github.com/BalzoWits</a> pubblicati con GitHub Pages.</footer>
 </main>
 <script>
 const UTENTE = 'BalzoWits';
 const QUESTO = 'balzowits.github.io';
-// usati se l'API di GitHub non risponde (limite di 60 richieste l'ora per indirizzo)
+const BASE = `https://${UTENTE.toLowerCase()}.github.io/`;
+
+// categorie = topic dei repository
+const CATEGORIE = { 'gioco': 'Giochi', 'stampa-3d': 'Stampa 3D', 'strumento': 'Strumenti', 'archivio': 'Archivi' };
+// colore di ogni progetto (quelli nuovi ne prendono uno dalla tavolozza)
+const COLORE = { 'manifesti': '#c0392b', 'embosser-rulli': '#c8902e', 'stamp-roller': '#e4572e', 'visioni': '#7b4fb8',
+                 'carte-infami': '#d6336c', 'configuratore-gadget': '#2e86ab', 'Preventivatore-3D': '#16808a', 'WRNRS': '#b23a48' };
+const TAVOLOZZA = ['#e4572e', '#2e86ab', '#3f8f5a', '#a14ea8', '#c8902e', '#16808a', '#6c5ce7', '#d6336c'];
+
+// loghi per i progetti che non hanno una favicon propria
+const LOGHI = {
+  'manifesti': `<svg viewBox="0 0 48 48"><rect x="11" y="6" width="26" height="36" rx="2" fill="#f4ead6" stroke="#c0392b" stroke-width="2"/><rect x="15" y="11" width="18" height="15" fill="#c0392b"/><path d="M24 13.5l1.9 3.9 4.3.6-3.1 3 .7 4.3-3.8-2-3.8 2 .7-4.3-3.1-3 4.3-.6z" fill="#f4ead6"/><rect x="15" y="30" width="18" height="2.6" fill="#1c1a17"/><rect x="15" y="35" width="12" height="2" fill="#1c1a17" opacity=".5"/><circle cx="24" cy="6" r="2.4" fill="#1c1a17"/></svg>`,
+  'configuratore-gadget': `<svg viewBox="0 0 48 48"><path d="M8 24V11a3 3 0 0 1 3-3h13l16 16-16 16z" fill="#2e86ab"/><circle cx="16" cy="16" r="3.2" fill="#fff"/><text x="27" y="31" font-family="Inter,Arial" font-weight="700" font-size="12" fill="#fff" text-anchor="middle">%</text></svg>`,
+  'Preventivatore-3D': `<svg viewBox="0 0 48 48"><path d="M24 6l15 8.5v17L24 40 9 31.5v-17z" fill="#16808a"/><path d="M24 6l15 8.5L24 23 9 14.5z" fill="#3fb3be"/><path d="M24 23v17l15-8.5v-17z" fill="#0e5c63"/><text x="31.5" y="32" font-family="Inter,Arial" font-weight="700" font-size="11" fill="#fff" text-anchor="middle">€</text></svg>`,
+  'WRNRS': `<svg viewBox="0 0 48 48"><rect x="9" y="10" width="20" height="28" rx="3" fill="#f2c6cc" transform="rotate(-12 19 24)"/><rect x="19" y="9" width="20" height="28" rx="3" fill="#b23a48" transform="rotate(8 29 23)"/><text x="29" y="28" font-family="Fraunces,Georgia" font-weight="800" font-size="13" fill="#fff" text-anchor="middle" transform="rotate(8 29 23)">?</text></svg>`,
+};
+
+// usati se l'API di GitHub non risponde (limite di 60 richieste l'ora per rete)
 const RISERVA = [
-  ['manifesti', 'Pagina non ufficiale per sfogliare i manifesti di Manifestipolitici.it (Fondazione Gramsci Emilia-Romagna)'],
-  ['embosser-rulli', 'Rulli personalizzati per il Business Card Embosser: disegna nel browser e scarica il 3MF'],
-  ['stamp-roller', 'Generatore web di rulli-timbro personalizzati per marker da 15 mm, da stampare in 3D'],
-  ['visioni', 'Gioco di indizi e immagini da giocare col telefono'],
-  ['carte-infami', 'Party game da giocare col telefono: completa la frase, vince la risposta peggiore'],
-  ['configuratore-gadget', 'Configuratore e preventivatore per gadget promozionali'],
-  ['Preventivatore-3D', ''],
-  ['WRNRS', 'A web version of WRNRS'],
-].map(([name, description]) => ({ name, description }));
-const COLORI = ['#e4572e', '#2e86ab', '#3f8f5a', '#a14ea8', '#d4a017', '#c0392b', '#16808a', '#6c5ce7'];
+  ['manifesti', 'Pagina non ufficiale per sfogliare i manifesti di Manifestipolitici.it (Fondazione Gramsci Emilia-Romagna)', 'archivio'],
+  ['embosser-rulli', 'Rulli personalizzati per il Business Card Embosser: disegna nel browser e scarica il 3MF', 'stampa-3d'],
+  ['stamp-roller', 'Generatore web di rulli-timbro personalizzati per marker da 15 mm, da stampare in 3D', 'stampa-3d'],
+  ['visioni', 'Gioco di indizi e immagini da giocare col telefono', 'gioco'],
+  ['carte-infami', 'Party game da giocare col telefono: completa la frase, vince la risposta peggiore', 'gioco'],
+  ['configuratore-gadget', 'Configuratore e preventivatore per gadget promozionali', 'strumento'],
+  ['Preventivatore-3D', 'Preventivi per stampa 3D e taglio laser: materiale, ore macchina, finiture, extra e margine', 'stampa-3d'],
+  ['WRNRS', 'Versione web del mazzo di WRNRS: pesca una carta dal telefono', 'gioco'],
+].map(([name, description, t]) => ({ name, description, topics: [t] }));
 
-const titolo = n => n.replace(/[-_]+/g, ' ').replace(/^./, c => c.toUpperCase());
-const colore = n => COLORI[[...n].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % COLORI.length];
-const quando = d => d ? new Date(d).toLocaleDateString('it-IT', { month: 'short', year: 'numeric' }) : '';
-const esc = s => String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const nomeBello = n => n.replace(/[-_]+/g, ' ').replace(/^./, c => c.toUpperCase());
+const colore = n => COLORE[n] || TAVOLOZZA[[...n].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % TAVOLOZZA.length];
+const quando = d => d ? new Date(d).toLocaleDateString('it-IT', { month: 'long', year: 'numeric' }) : '';
+const urlDi = r => r.homepage && r.homepage.includes('github.io') ? r.homepage : `${BASE}${r.name}/`;
+const categoria = r => (r.topics || []).find(t => CATEGORIE[t]);
 
-function disegna(repo) {
-  document.getElementById('griglia').innerHTML = repo.map(r => {
-    const url = r.homepage && r.homepage.includes('github.io') ? r.homepage
-              : `https://${UTENTE.toLowerCase()}.github.io/${r.name}/`;
-    return `<a class="card" href="${esc(url)}" style="--c:${colore(r.name)}">
-      <div class="top"><span class="badge">${esc(titolo(r.name)[0])}</span><h2>${esc(titolo(r.name))}</h2></div>
-      <p>${esc(r.description) || '&nbsp;'}</p>
-      <div class="meta"><span>${esc(quando(r.pushed_at) && 'aggiornato ' + quando(r.pushed_at))}</span><span class="vai">Apri →</span></div>
+let progetti = [], filtro = '';
+
+function disegnaFiltri() {
+  const conta = {};
+  progetti.forEach(p => { const c = categoria(p); if (c) conta[c] = (conta[c] || 0) + 1; });
+  const voci = [['', 'Tutti', progetti.length], ...Object.keys(CATEGORIE).filter(k => conta[k]).map(k => [k, CATEGORIE[k], conta[k]])];
+  $('filtri').innerHTML = voci.map(([k, nome, n]) =>
+    `<button data-k="${k}" aria-pressed="${k === filtro}">${esc(nome)}<span class="n">${n}</span></button>`).join('');
+}
+
+function disegna() {
+  const lista = progetti.filter(p => !filtro || categoria(p) === filtro);
+  $('griglia').innerHTML = lista.map((p, i) => {
+    const cat = categoria(p);
+    const icona = p.icona ? `<img src="${esc(p.icona)}" alt="" loading="lazy">`
+                : LOGHI[p.name] || `<span class="lettera">${esc((p.titolo || nomeBello(p.name))[0])}</span>`;
+    return `<a class="card" href="${esc(urlDi(p))}" style="--c:${colore(p.name)};--i:${i}">
+      <div class="testa"><div class="icona">${icona}</div>
+        <div><h2>${esc(p.titolo || nomeBello(p.name))}</h2>${cat ? `<span class="tag">${esc(CATEGORIE[cat])}</span>` : ''}</div></div>
+      <p>${esc(p.descr || p.description) || 'Senza descrizione.'}</p>
+      <div class="piede"><span>${p.pushed_at ? 'aggiornato a ' + esc(quando(p.pushed_at)) : ''}</span><span class="vai">Apri <i>→</i></span></div>
     </a>`;
   }).join('');
 }
 
-fetch(`https://api.github.com/users/${UTENTE}/repos?per_page=100&sort=pushed`)
-  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-  .then(lista => {
-    const pagine = lista.filter(r => r.has_pages && !r.fork && !r.archived && r.name.toLowerCase() !== QUESTO);
-    if (!pagine.length) throw new Error('vuoto');
-    disegna(pagine);
-  })
-  .catch(() => {
-    disegna(RISERVA);
-    document.getElementById('stato').textContent = 'GitHub non ha risposto: mostro l\'ultimo elenco salvato.';
-  });
+$('filtri').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  filtro = b.dataset.k; disegnaFiltri(); disegna();
+});
+
+// dalla pagina pubblicata di ogni progetto: titolo, descrizione e icona (stessa origine, niente CORS)
+async function arricchisci(p) {
+  try {
+    const url = urlDi(p);
+    const html = await (await fetch(url)).text();
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const t = doc.querySelector('title')?.textContent.trim();
+    if (t && t.length <= 40) p.titolo = t;
+    const d = doc.querySelector('meta[name="description"]')?.content?.trim();
+    if (d) p.descr = d;
+    const ic = doc.querySelector('link[rel="apple-touch-icon"], link[rel~="icon"]')?.getAttribute('href');
+    if (ic) p.icona = new URL(ic, url).href;
+  } catch (e) { /* resta quello del repository */ }
+}
+
+async function avvia() {
+  try {
+    const r = await fetch(`https://api.github.com/users/${UTENTE}/repos?per_page=100&sort=pushed`);
+    if (!r.ok) throw new Error(r.status);
+    progetti = (await r.json()).filter(r => r.has_pages && !r.fork && !r.archived && r.name.toLowerCase() !== QUESTO);
+    if (!progetti.length) throw new Error('vuoto');
+  } catch (e) {
+    progetti = RISERVA;
+    $('stato').textContent = 'GitHub non ha risposto: mostro l\'ultimo elenco salvato.';
+  }
+  disegnaFiltri();
+  // aspetto le pagine dei progetti al massimo 2 secondi, poi disegno comunque
+  const tutte = Promise.all(progetti.map(arricchisci));
+  const finite = await Promise.race([tutte.then(() => true), new Promise(ok => setTimeout(ok, 2000, false))]);
+  disegna();
+  if (!finite) tutte.then(() => { document.body.classList.add('fermo'); disegna(); });
+}
+avvia();
 </script>
 </body>
 </html>
