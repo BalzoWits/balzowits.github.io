@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BalzoWits</title>
+<meta name="description" content="Tutti i progetti pubblicati su GitHub Pages da BalzoWits">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23e4572e'/%3E%3Ctext x='16' y='23' font-size='19' font-family='Georgia,serif' font-weight='bold' text-anchor='middle' fill='%23fff'%3EB%3C/text%3E%3C/svg%3E">
+<style>
+:root {
+  --bg: #f6f3ee; --card: #fffdf9; --ink: #1d1b18; --muted: #6f6a62; --line: #e4ddd2;
+  --accent: #e4572e; --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(60,40,20,.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #151413; --card: #1e1c1a; --ink: #f1ece4; --muted: #a39b8f; --line: #34302b;
+          --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35); }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+       font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 1040px; margin: 0 auto; padding: 56px 16px 40px; }
+header h1 { font: 700 clamp(2.2rem, 6vw, 3.4rem)/1.05 Georgia, "Times New Roman", serif;
+            margin: 0 0 10px; letter-spacing: -.02em; }
+header h1 span { color: var(--accent); }
+header p { margin: 0; color: var(--muted); max-width: 52ch; }
+#griglia { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+           gap: 16px; margin-top: 40px; }
+a.card { display: flex; flex-direction: column; gap: 10px; padding: 20px; min-height: 170px;
+         background: var(--card); border: 1px solid var(--line); border-radius: 14px;
+         color: inherit; text-decoration: none; box-shadow: var(--shadow);
+         transition: transform .18s ease, border-color .18s ease; }
+a.card:hover, a.card:focus-visible { transform: translateY(-3px); border-color: var(--c); outline: none; }
+.top { display: flex; align-items: center; gap: 12px; }
+.badge { flex: none; width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;
+         background: var(--c); color: #fff; font: 700 1.15rem Georgia, serif; }
+.card h2 { margin: 0; font-size: 1.12rem; line-height: 1.25; }
+.card p { margin: 0; color: var(--muted); font-size: .94rem; flex: 1; }
+.meta { display: flex; justify-content: space-between; font-size: .8rem; color: var(--muted); }
+.meta .vai { color: var(--c); font-weight: 600; }
+#stato { color: var(--muted); margin-top: 24px; font-size: .9rem; }
+footer { margin-top: 48px; color: var(--muted); font-size: .85rem; }
+footer a { color: inherit; }
+@media (prefers-reduced-motion: reduce) { a.card { transition: none; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Balzo<span>Wits</span></h1>
+    <p>Giochi, generatori e piccoli strumenti fatti per curiosità. Si aprono nel browser, senza installare niente.</p>
+  </header>
+  <section id="griglia" aria-label="Progetti"></section>
+  <div id="stato"></div>
+  <footer>L'elenco si aggiorna da solo con i repository di <a href="https://github.com/BalzoWits">github.com/BalzoWits</a> che hanno GitHub Pages attivo.</footer>
+</main>
+<script>
+const UTENTE = 'BalzoWits';
+const QUESTO = 'balzowits.github.io';
+// usati se l'API di GitHub non risponde (limite di 60 richieste l'ora per indirizzo)
+const RISERVA = [
+  ['manifesti', 'Pagina non ufficiale per sfogliare i manifesti di Manifestipolitici.it (Fondazione Gramsci Emilia-Romagna)'],
+  ['embosser-rulli', 'Rulli personalizzati per il Business Card Embosser: disegna nel browser e scarica il 3MF'],
+  ['stamp-roller', 'Generatore web di rulli-timbro personalizzati per marker da 15 mm, da stampare in 3D'],
+  ['visioni', 'Gioco di indizi e immagini da giocare col telefono'],
+  ['carte-infami', 'Party game da giocare col telefono: completa la frase, vince la risposta peggiore'],
+  ['configuratore-gadget', 'Configuratore e preventivatore per gadget promozionali'],
+  ['Preventivatore-3D', ''],
+  ['WRNRS', 'A web version of WRNRS'],
+].map(([name, description]) => ({ name, description }));
+const COLORI = ['#e4572e', '#2e86ab', '#3f8f5a', '#a14ea8', '#d4a017', '#c0392b', '#16808a', '#6c5ce7'];
+
+const titolo = n => n.replace(/[-_]+/g, ' ').replace(/^./, c => c.toUpperCase());
+const colore = n => COLORI[[...n].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % COLORI.length];
+const quando = d => d ? new Date(d).toLocaleDateString('it-IT', { month: 'short', year: 'numeric' }) : '';
+const esc = s => String(s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+function disegna(repo) {
+  document.getElementById('griglia').innerHTML = repo.map(r => {
+    const url = r.homepage && r.homepage.includes('github.io') ? r.homepage
+              : `https://${UTENTE.toLowerCase()}.github.io/${r.name}/`;
+    return `<a class="card" href="${esc(url)}" style="--c:${colore(r.name)}">
+      <div class="top"><span class="badge">${esc(titolo(r.name)[0])}</span><h2>${esc(titolo(r.name))}</h2></div>
+      <p>${esc(r.description) || '&nbsp;'}</p>
+      <div class="meta"><span>${esc(quando(r.pushed_at) && 'aggiornato ' + quando(r.pushed_at))}</span><span class="vai">Apri →</span></div>
+    </a>`;
+  }).join('');
+}
+
+fetch(`https://api.github.com/users/${UTENTE}/repos?per_page=100&sort=pushed`)
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(lista => {
+    const pagine = lista.filter(r => r.has_pages && !r.fork && !r.archived && r.name.toLowerCase() !== QUESTO);
+    if (!pagine.length) throw new Error('vuoto');
+    disegna(pagine);
+  })
+  .catch(() => {
+    disegna(RISERVA);
+    document.getElementById('stato').textContent = 'GitHub non ha risposto: mostro l\'ultimo elenco salvato.';
+  });
+</script>
+</body>
+</html>
