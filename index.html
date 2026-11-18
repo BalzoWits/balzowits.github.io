@@ -105,7 +105,7 @@ const BASE = `https://${UTENTE.toLowerCase()}.github.io/`;
 const CATEGORIE = { 'gioco': 'Giochi', 'stampa-3d': 'Stampa 3D', 'strumento': 'Strumenti', 'archivio': 'Archivi' };
 // colore di ogni progetto (quelli nuovi ne prendono uno dalla tavolozza)
 const COLORE = { 'manifesti': '#c0392b', 'embosser-rulli': '#c8902e', 'stamp-roller': '#e4572e', 'visioni': '#7b4fb8',
-                 'carte-infami': '#d6336c', 'configuratore-gadget': '#2e86ab', 'Preventivatore-3D': '#16808a', 'WRNRS': '#b23a48' };
+                 'carte-infami': '#d6336c', 'configuratore-gadget': '#2e86ab', 'Preventivatore-3D': '#16808a', 'dimmi-di-piu': '#c8233c' };
 const TAVOLOZZA = ['#e4572e', '#2e86ab', '#3f8f5a', '#a14ea8', '#c8902e', '#16808a', '#6c5ce7', '#d6336c'];
 
 // loghi per i progetti che non hanno una favicon propria
@@ -113,7 +113,6 @@ const LOGHI = {
   'manifesti': `<svg viewBox="0 0 48 48"><rect x="11" y="6" width="26" height="36" rx="2" fill="#f4ead6" stroke="#c0392b" stroke-width="2"/><rect x="15" y="11" width="18" height="15" fill="#c0392b"/><path d="M24 13.5l1.9 3.9 4.3.6-3.1 3 .7 4.3-3.8-2-3.8 2 .7-4.3-3.1-3 4.3-.6z" fill="#f4ead6"/><rect x="15" y="30" width="18" height="2.6" fill="#1c1a17"/><rect x="15" y="35" width="12" height="2" fill="#1c1a17" opacity=".5"/><circle cx="24" cy="6" r="2.4" fill="#1c1a17"/></svg>`,
   'configuratore-gadget': `<svg viewBox="0 0 48 48"><path d="M8 24V11a3 3 0 0 1 3-3h13l16 16-16 16z" fill="#2e86ab"/><circle cx="16" cy="16" r="3.2" fill="#fff"/><text x="27" y="31" font-family="Inter,Arial" font-weight="700" font-size="12" fill="#fff" text-anchor="middle">%</text></svg>`,
   'Preventivatore-3D': `<svg viewBox="0 0 48 48"><path d="M24 6l15 8.5v17L24 40 9 31.5v-17z" fill="#16808a"/><path d="M24 6l15 8.5L24 23 9 14.5z" fill="#3fb3be"/><path d="M24 23v17l15-8.5v-17z" fill="#0e5c63"/><text x="31.5" y="32" font-family="Inter,Arial" font-weight="700" font-size="11" fill="#fff" text-anchor="middle">€</text></svg>`,
-  'WRNRS': `<svg viewBox="0 0 48 48"><rect x="9" y="10" width="20" height="28" rx="3" fill="#f2c6cc" transform="rotate(-12 19 24)"/><rect x="19" y="9" width="20" height="28" rx="3" fill="#b23a48" transform="rotate(8 29 23)"/><text x="29" y="28" font-family="Fraunces,Georgia" font-weight="800" font-size="13" fill="#fff" text-anchor="middle" transform="rotate(8 29 23)">?</text></svg>`,
 };
 
 // usati se l'API di GitHub non risponde (limite di 60 richieste l'ora per rete)
@@ -125,7 +124,7 @@ const RISERVA = [
   ['carte-infami', 'Party game da giocare col telefono: completa la frase, vince la risposta peggiore', 'gioco'],
   ['configuratore-gadget', 'Configuratore e preventivatore per gadget promozionali', 'strumento'],
   ['Preventivatore-3D', 'Preventivi per stampa 3D e taglio laser: materiale, ore macchina, finiture, extra e margine', 'stampa-3d'],
-  ['WRNRS', 'Versione web del mazzo di WRNRS: pesca una carta dal telefono', 'gioco'],
+  ['dimmi-di-piu', 'Dimmi di più / Tell Me More: gioco di carte per parlarsi davvero, in italiano e inglese, da telefono o PC', 'gioco'],
 ].map(([name, description, t]) => ({ name, description, topics: [t] }));
 
 const $ = id => document.getElementById(id);
